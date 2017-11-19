@@ -13,9 +13,28 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+
+from django.conf.urls import url,include
 from django.contrib import admin
+from app.home.views import index
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib.auth.views import login, logout_then_login
+from django.contrib.auth.decorators import login_required
+from django.views.generic import RedirectView
+# -*- coding: utf-8 -*-
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$', RedirectView.as_view(url='/home/')),
+	url(r'^home/', login_required(index),name='home'), 
+    url(r'^accounts/login/',login,{'template_name':'login.html'},name='login'),
+    url(r'^logout/',logout_then_login,name='logout'),
+
+    url(r'^usuarios/', include ('app.usuarios.urls',namespace="usuarios")),
+    url(r'^pacientes/', include ('app.pacientes.urls',namespace="pacientes")),
+
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

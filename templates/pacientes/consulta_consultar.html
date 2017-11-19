@@ -1,0 +1,152 @@
+{% extends 'base/base_consultar.html' %}
+
+{% block title %}
+	Crear Consulta
+{% endblock %}
+
+{% block header %}
+<style>
+	#id_enfermedades {
+		column-count: 2;
+	}
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+	{% csrf_token %}
+
+ <div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title"></h3>
+  </div>
+  <div class="panel-body">
+
+	<center>
+		<h2><p class="text-primary">Nueva Consulta</p></h2>		
+	</center>
+	<div>
+		<div class="col-md-5 col-md-offset-2">
+			<div class="form-group">
+				<label for="nombre_paciente">Código del Expediente</label>
+				<div class="form-group has-success has-feedback"" role="form">
+					<input type="search" class="form-control " id="id_codigo_expediente" placeholder="EJ. 0001-17" name="codigo_paciente" list="id_listacodigo" >
+					<span class="glyphicon glyphicon-search form-control-feedback"></span>
+					<datalist id="id_listacodigo">
+					
+					</datalist>
+				</div>
+			</div>
+	</div>
+
+	<div class="col-md-3">
+		<div class="form-group">
+				<label for="{{form.fecha_consulta.name}}">{{form.fecha_consulta.label}}</label>	
+			{{form.fecha_consulta}}
+		</div>
+	</div>
+
+	<div class="col-md-8 col-md-offset-2">
+		<div class="form-group">
+				<label for="{{form.diagnostico.name}}">{{form.diagnostico.label}}</label>	
+			{{form.diagnostico}}
+		</div>
+	</div>
+
+	<div class="col-md-8 col-md-offset-2">
+		<div class="form-group">
+				<label for="{{form.observaciones.name}}">{{form.observaciones.label}}</label>	
+			{{form.observaciones}}
+		</div>
+	</div>
+
+	<div class="col-md-4 col-md-offset-2">
+		<div class="form-group">
+				<label for="{{form.nombre_medico.name}}">{{form.nombre_medico.label}}</label>	
+			{{form.nombre_medico}}
+		</div>
+	</div>
+
+
+
+	<div class="col-md-4">
+		<div class="form-group">
+				<label for="{{form.hora_consulta.name}}">{{form.hora_consulta.label}}</label>	
+			{{form.hora_consulta}}
+		</div>
+	</div>
+
+	<div class="col-md-8 col-md-offset-2">
+		<div class="form-group">
+			<br><br>
+			<div class="col-md-3 col-md-offset-2">
+			  <a href="/" class="btn btn-default btn-block">Regresar</a>
+			</div> 
+
+			<div class="col-md-3 col-md-offset-1">
+			  <center><button type="submit" class="btn btn-primary btn-block">Siguiente</button></center>
+			</div>
+		
+		</div>
+		<br><br>
+	</div>
+	</div>
+</div>
+
+
+</form>
+
+    <script type="text/javascript">
+
+    	$('#id_codigo_expediente').keyup(function(e){
+	 	consulta = $("#id_codigo_expediente").val();
+		 		
+	 	$('#id_listacodigo').empty().append('whatever');
+	 	$.ajax({
+		 		data: {'codigo': consulta},
+		 		url: '/pacientes/busqueda_expediente/',
+		 		type: 'get',
+		 		success : function(data) {
+		        	for (var i = 0; i < data.length; i++) {
+						$("#id_listacodigo").append("<option>"+data[i].fields.cod_expediente+"</option>");
+					}
+		 		},
+		 		error : function(message) {
+		        	console.log(message);
+		     	}
+		 	});
+		});
+
+	$("input[name='codigo_paciente']").on('input', function(e){
+
+		var $input = $(this),
+		   val = $input.val();
+		   list = $input.attr('list'),
+		   match = $('#'+list + ' option').filter(function() {
+		       return ($(this).val() === val);
+		   });
+
+		var codigo = $('#id_codigo_expediente').val();
+
+		if(match.length > 0) {	
+			$.ajax({
+				data : {'codigo':codigo},
+				url : '/pacientes/busqueda_consulta/',
+				type : 'get',
+				success: function(data){
+					for (var i = 0; i < data.length; i++) {
+						$('#id_fecha_consulta').append("<option value="+data[i].fields.fecha_consulta+">"+data[i].fields.fecha_consulta+"</option>");
+						$('#id_diagnostico').val(data[i].fields.diagnostico);
+						$('#id_observaciones').val(data[i].fields.observaciones);
+						$('#id_nombre_medico').val(data[i].fields.nombre_medico);
+						$('#id_hora_consulta').val(data[i].fields.hora_consulta);
+					
+					}
+				},
+			});
+		    }
+		});
+    </script>
+{% endblock %}

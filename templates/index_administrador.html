@@ -1,0 +1,117 @@
+{% load staticfiles %}
+
+	<meta charset="UTF-8">
+	<title>Expediente Clinico</title>
+
+	<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script src="/static/js/bootstrap.min.js"/></script>
+
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+	 <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.ico' %}">
+	<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css"/>
+	
+	<link rel="stylesheet" type="text/css" href="/static/style/home_style_administrador.css"/>
+
+	<link rel="stylesheet" type="text/css" href="/static/style/modal.css"/>
+
+
+{% block navbar %}
+
+	<nav class="navbar navbar-inverse">
+  		<div class="container-fluid">
+
+    		<div class="navbar-header">
+     			 <button class="navbar-toggle collapsed" type="button" data-toggle="modal" data-target="#bs-example-navbar-collapse-2">
+        			<span class="sr-only">Toggle navigation</span>
+        			<span class="icon-bar"></span>
+        			<span class="icon-bar"></span>
+        			<span class="icon-bar"></span>
+      			</button>
+      			<a class="navbar-brand" href="#"></a>
+    		</div>
+
+    		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+      			<ul id="btn_completos" class="nav navbar-nav navbar-left">
+       				<li class="active">
+       				</li> 
+      			</ul>
+
+
+      			<ul id="btn_incompletos" class="nav navbar-nav navbar-left">
+       				<li class="active">
+       				</li> 
+      			</ul>
+
+
+      			<ul class="	nav navbar-nav navbar-right">
+       				<li class="active">
+           				<a href="{%url 'logout' %}">Cerrar Sesión</a>
+       				</li> 
+      			</ul>
+
+      			<li class="nav navbar-nav navbar-right">
+        			<div class="col-md-3">
+          				<h6 style="color:white">Hola, <B>{{nombreUser}}</B></h6>
+       				 </div>
+      			</li>
+
+      			<h2 style="color:white "> <center>Clínica Medica</center></h2>
+      			<h3 style="color:white "> <center>Complejo Educativo República de Corea</center></h3>
+
+    		</div>
+  		 </div>
+	  </nav>
+
+{% endblock %}
+
+
+<body>
+
+	<div class="contenedor-nav-inferior">
+
+		<div class="contenedor" id="imagen0">
+			<a href="/usuarios/gestion/">
+			<img class="icon-nav" src="/media/imagenes/Menu/users.png"></a>
+			<p class="texto">Usuarios</p>
+		</div>
+
+		<div class="contenedor" id="imagen1">
+			<a href="/pacientes/alumno/crear">
+			<img class="icon-nav" src="/media/imagenes/Menu/nuevo.png"></a>
+			<p class="texto">Nuevo</p>
+		</div>
+
+		<div class="contenedor" id="imagen2">
+			<a href="/pacientes/alumno/consultar/">
+			<img class="icon-nav" src="/media/imagenes/Menu/consultar.png"></a>
+			<p class="texto">Consultar</p>
+		</div>
+
+		<div class="contenedor" id="imagen3">
+			<a href="#">
+			<img class="icon-nav" src="/media/imagenes/Menu/bell 2.png"></a>
+			<p class="texto">Editar</p>
+		</div>
+
+		<div class="contenedor" id="imagen4">
+			<a href="#">
+			<img class="icon-nav" src="/media/imagenes/Menu/informe.png">
+			<p class="texto">Informes</p>
+		</div>
+
+		<div class="contenedor" id="imagen7">
+			<a href="#">
+			<img class="icon-nav" src="/media/imagenes/Menu/eliminar.png"></a>
+			<p class="texto">Eliminar</p>
+		</div>
+
+	</div>	
+
+
+
+</div>
+
+
+</body>
+

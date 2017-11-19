@@ -1,0 +1,15 @@
+﻿INSERT INTO pacientes_enfermedades(`id`, `nombre_enfermedad`) VALUES
+(1, 'Alergias'),
+(2, 'Desmayos'),
+(3, 'Presión sanguinea alta'),
+(4, 'Sinusitis'),
+(5, 'Hepatitis'),
+(6, 'Transtornos de la sangre'),
+(7, 'Asma'),
+(8, 'Artritis'),
+(9, 'Enfermedades venéreas'),
+(10, 'Diabetes'),
+(11, 'Gastritis'),
+(12, 'SIDA'),
+(13, 'Transtornos renales'),
+(14, 'Tuberculosis');

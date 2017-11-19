@@ -1,0 +1,93 @@
+{% extends 'base/base_usuarios.html' %}
+
+{% block title %}
+Gestion de usuarios
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+
+{% block content %}
+
+	<div class="col-md-12 col-md-offset-4">
+		<div class="form-group">
+			<h1>Gestión de usuarios</h1>
+			<br><br><br>
+			
+		</div>
+	</div>
+<h3> <center> Usuarios registrados </center> </h3>
+	<div class="col-md-10 col-md-offset-1">
+		<div class="table-responsive">
+			<table class='table table-hover table-striped table-bordered' cellpadding="0"  cellspacing="0" border: 100px;>
+			    <thead>
+			        <tr style="background-color: #3498db" >
+			            <th>Id</th>
+			            <th>Username</th>
+			            <th>Nombre</th>
+			            <th>Apellido</th>
+			            <th>Email</th>
+			            <th>Activo</th>
+			            <th>Rol</th>
+			            <th>Acciones</th>
+			        </tr>
+			    </thead>
+
+				<tbody>
+					{% if listaUsuarios %}
+					{% for usuario in listaUsuarios %}
+					<tr>
+						<td>{{ usuario.id }}</td>
+						<td>{{ usuario.username }}</td> 
+						<td>{{ usuario.first_name }}</td>
+						<td>{{ usuario.last_name }}</td>
+						<td>{{ usuario.email }}</td>
+						<td>{{ usuario.is_active }}</td>
+						<td>{{ usuario.rol }}</td>
+						<td>
+							<a class="btn btn-danger" href="#" onclick="desactivar('{{usuario.id}}')">Eliminar</a>
+
+						</td>			
+					</tr>
+					{% endfor %}
+					
+					{% else %}
+					<h1>No hay registros de solicitudes</h1>
+					{% endif %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+
+<script>
+	function desactivar(id_user){
+		$.ajax({
+			data : {'id':id_user},
+			url : '/usuarios/desactivar/',
+			type : 'post',
+			success: function(data){
+				swal("Se elimino correctamente!", "You clicked the button!", "success")
+				swal({
+				  title: "¡FINALIZADO!",
+				  text: "¡Se eliminó correctamente!",
+				  type: "success",
+				  showCancelButton: true,
+				  confirmButtonColor: "#DD6B55",
+				  confirmButtonText: "Ok",
+				  showCancelButton: false,
+				  closeOnConfirm: false
+				},
+				function(){
+				  location.reload();
+				});
+			},
+		});
+	}
+
+</script>
+
+
+
+{% endblock %}

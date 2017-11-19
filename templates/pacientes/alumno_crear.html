@@ -1,0 +1,161 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+	Crear Expediente
+{% endblock %}
+
+{% block menu-social %}
+{% endblock %}
+
+
+{% block content %}
+<form method="POST">
+	{% csrf_token %}
+
+	<div class="row">
+	<ul>
+	  {% if form.non_field_errors %}
+	    <li>{{ form.non_field_errors }}</li>
+	  {% endif %}
+	  {% for field in form %}
+	    {% if field.errors %}
+	      <li class="alert alert-danger">
+	        <strong>{{ field.label }}</strong>
+	        <ul>
+	          {% for error in field.errors %}
+	            <li class="alert alert-danger"><strong>{{ error }}</li></strong>
+	          {% endfor %}
+	        </ul>
+	      </li>
+	    {% endif %}
+	  {% endfor %}
+	</ul>
+	</div>
+
+ <div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title"></h3>
+  </div>
+  <div class="panel-body">
+
+	<center>
+		<h2><p class="text-primary">Nuevo Alumno</p></h2>		
+	</center>
+
+
+	<div class="col-md-4 col-md-offset-2">
+		<div class="form-group">
+				<label for="{{form.nombres.name}}">{{form.nombres.label}}</label>	
+			{{form.nombres}}
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group">
+			<label for="{{form.apellidos.name}}">{{form.apellidos.label}}</label>
+			{{form.apellidos}}
+		</div>
+	</div>
+
+	<div class="col-md-8 col-md-offset-2">
+		<div class="form-group">
+				<label for="{{form.direccion.name}}" >{{form.direccion.label}}</label>
+				{{form.direccion}}
+		</div>
+	</div>
+
+
+	<div class="col-md-3 col-md-offset-2">
+		<div class="form-group">
+			<label for="{{form.grado.name}}">{{form.grado.label}}</label>	
+			{{form.grado}}
+		</div>
+	</div>
+
+	<div class="col-md-3">
+		<div class="form-group">
+			<label for="{{form.genero.name}}">{{form.genero.label}}</label>	
+			{{form.genero}}
+		</div>
+	</div>
+
+	<div class="col-md-2">
+		<div class="form-group">
+			<label for="{{form.edad.name}}">{{form.edad.label}}</label>	
+			{{form.edad}}
+		</div>
+	</div>
+
+	<div class="col-md-10 col-md-offset-2">
+		<div class="form-group">
+			<label for="{{form.fecha_nacimiento.name}}" >{{form.fecha_nacimiento.label}}</label>
+			<div class='input-group date' class='form-control' >
+				{{form.fecha_nacimiento}}
+            </div>	
+		</div>
+	</div>
+
+	<div class="col-md-6 col-md-offset-2">
+		<div class="form-group">
+			<label for="{{form.responsable.name}}" >{{form.responsable.label}}</label>
+				{{form.responsable}}
+		</div>
+	</div>
+
+	<div class="col-md-2">
+		<div class="form-group">
+			<label for="{{form.telefono.name}}" >{{form.telefono.label}}</label>
+				{{form.telefono}}
+		</div>
+	</div>
+
+	<div class="col-md-8 col-md-offset-2">
+		<div class="form-group">
+			<br><br>
+			<div class="col-md-3 col-md-offset-2">
+			  <a href="/" class="btn btn-default btn-block">Regresar</a>
+			</div> 
+
+			<div class="col-md-3 col-md-offset-1">
+			  <center><button type="submit" class="btn btn-primary btn-block">Siguiente</button></center>
+			</div>
+
+
+		</div>
+		<br><br>
+	</div>
+	</div>
+</div>
+	<div class="col-md-8 col-md-offset-2">
+		<div class="form-group">
+			{{form.fecha_hora_creacion}}	
+		</div>
+	</div>	
+
+ <script>
+	$('.date').change(function() {
+		
+		var f = new Date($('#id_fecha_nacimiento_year').val(),$('#id_fecha_nacimiento_month').val() - 1,$('#id_fecha_nacimiento_day').val());
+		
+		    var today = new Date();
+		    var dayDiff = Math.ceil(today - f) / (1000 * 60 * 60 * 24 * 365);
+		    var age = parseInt(dayDiff);
+		    $('#id_edad').val(age);
+	    
+
+	});
+	 $(function() {
+		var f = new Date($('#id_fecha_nacimiento_year').val(),$('#id_fecha_nacimiento_month').val() - 1,$('#id_fecha_nacimiento_day').val());
+		
+		    var today = new Date();
+		    var dayDiff = Math.ceil(today - f) / (1000 * 60 * 60 * 24 * 365);
+		    var age = parseInt(dayDiff);
+		    $('#id_edad').val(age);
+		    
+	})
+
+	</script> 
+
+</form>
+
+	
+{% endblock %}

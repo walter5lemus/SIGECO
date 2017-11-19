@@ -1,0 +1,102 @@
+
+body {
+   overflow-x: hidden;  /* Oculpa o elimina scroll o barra de desplazamiento horizontal*/
+}
+
+
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+
+body{
+	background-image: url(/media/imagenes/Menu/Bienvenidos.jpg);
+	background-repeat: no-repeat;
+	background-size: 75% 70%;
+	background-attachment: fixed;
+	background-position: center;
+}
+
+
+div.contenedor-nav-inferior{
+	margin:0px;
+	padding:0px;
+	font-family: verdana;
+
+	margin:auto;
+	margin-top: 400px;  
+	width: 375px;
+	height: 150px;
+	margin-right: 800px; 
+	background-color: red; 
+}
+
+div.contenedor{
+	width: 125px;
+	height: 150px;
+	float: left;
+
+	-webkit-transition: height 0.4s;
+}
+
+div#imagen1{
+	background-color: rgb(208,101,3);
+}
+
+div#imagen2{
+	background-color: rgb(233,147,26);
+}
+
+div#imagen3{
+	background-color: rgb(103,49,250);
+}
+
+div#imagen4{
+	background-color: rgb(22,145,190);
+}
+
+div#imagen7{
+	background-color: rgb(21,40,54);
+}
+
+
+
+
+img.icon-nav{
+	display: block;
+	margin:20px auto;
+	background-color: rgba(255,255,255,0.15);
+	width: 50px;
+	padding: 10px;  /*tamaño de imagen*/
+
+	-webkit-border-radius: 50%;
+	-webkit-box-shadow: 0px 0px 0px 20px rgba(255,255,255,0);
+	-webkit-transition:box-shadow 0.4s;
+}
+
+
+p.texto{
+	font-size: 0.9em;
+	color: white;
+	text-align: center;
+	padding-top: 10px
+	opacity:0.6;
+
+	-webkit-transition: padding-top 0.4s;
+}
+
+div.contenedor:hover{
+	height: 170px;
+}
+
+div.contenedor:hover p.texto{
+	padding-top: 20px;
+	opacity: 1;
+}
+
+div.contenedor:hover img.icon-nav{
+	-webkit-box-shadow: 0px 0px 0px 0px rgba(255,255,255,0.6);
+}
+
