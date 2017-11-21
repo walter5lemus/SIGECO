@@ -14,7 +14,6 @@ class Alumno_form(forms.ModelForm):
 
 		fields = [
 			'nombres',
-			'apellidos',
 			'direccion',
 			'grado',
 			'edad',
@@ -27,7 +26,6 @@ class Alumno_form(forms.ModelForm):
 
 		labels={
 			'nombres':'Nombres',
-			'apellidos':'Apellidos',
 			'direccion':'Dirección',
 			'edad':'Edad',
 			'grado':'Grado',
@@ -40,7 +38,6 @@ class Alumno_form(forms.ModelForm):
 
 		widgets={
 			'nombres':forms.TextInput(attrs={'class':'form-control'}),
-			'apellidos':forms.TextInput(attrs={'class':'form-control'}),
 			'direccion':forms.TextInput(attrs={'class':'form-control'}),
 			'edad':forms.NumberInput(attrs={'class':'form-control','min':1,'readonly':True}),
 			'grado':forms.Select(attrs={'class':'form-control'}),
@@ -58,7 +55,6 @@ class Alumno_form_consultar(forms.ModelForm):
 
 		fields = [
 			'nombres',
-			'apellidos',
 			'direccion',
 			'grado',
 			'edad',
@@ -71,7 +67,6 @@ class Alumno_form_consultar(forms.ModelForm):
 
 		labels={
 			'nombres':'Nombres',
-			'apellidos':'Apellidos',
 			'direccion':'Dirección',
 			'edad':'Edad Actual',
 			'grado':'Grado de registro',
@@ -84,7 +79,6 @@ class Alumno_form_consultar(forms.ModelForm):
 
 		widgets={
 			'nombres':forms.TextInput(attrs={'class':'form-control','readonly':True}),
-			'apellidos':forms.TextInput(attrs={'class':'form-control','readonly':True}),
 			'direccion':forms.TextInput(attrs={'class':'form-control','readonly':True}),
 			'edad':forms.TextInput(attrs={'class':'form-control','readonly':True}),
 			'grado':forms.TextInput(attrs={'class':'form-control','readonly':True}),
@@ -106,7 +100,7 @@ class Expediente_form(forms.ModelForm):
 			'telefono',
 			'tipo_sangre',
 			'alergias',
-			'enfermedades_padecidas',
+			'enfermedades_padecidas',			
 			'usuario_creador',
 			'fecha_hora_creacion',
 		]
@@ -117,13 +111,13 @@ class Expediente_form(forms.ModelForm):
 			'telefono':'Teléfono',
 			'tipo_sangre':'Tipo de Sangre',
 			'alergias':'Alergias',
-			'enfermedades_padecidas':'Enfermedades Padecidas Anteriormente',			
+			'enfermedades_padecidas':'Enfermedades Padecidas Anteriormente',
 			'usuario_creador':'usuario creador',
 			'fecha_hora_creacion':'Fecha y hora de creación',
 		}
 		widgets = {
 			'alumno' : forms.HiddenInput(attrs={'class':'form-control'}),
-			'cod_expediente':forms.TextInput(attrs={'class':'form-control', 'pattern':'[0-9]{4}[-]{1}[0-9]{2}','title':'Ejemplo: 0001-16','autocomplete':'off','autofocus':'true'}),
+			'cod_expediente':forms.TextInput(attrs={'class':'form-control'}),
 			'responsable':forms.TextInput(attrs={'class':'form-control'}),
 			'telefono':forms.TextInput(attrs={'class':'form-control', 'pattern':'[0-9]{8}','title':'Ejemplo: 77777777'}),
 			'tipo_sangre':forms.TextInput(attrs={'class':'form-control'}),
@@ -205,21 +199,21 @@ class Consulta_form(forms.ModelForm):
 			'nombre_medico': forms.TextInput(attrs={'class':'form-control'}),
 			'fecha_consulta': forms.TextInput(attrs={'class':'form-control'}),
 			'hora_consulta' : forms.TextInput(attrs={'class':'form-control'}),
-			'fecha_hora_creacion': forms.DateTimeInput(attrs={'class':'form-control','readonly':True}),
+			'fecha_hora_creacion': forms.HiddenInput(attrs={'class':'form-control','readonly':True}),
 			'enfermedades': forms.CheckboxSelectMultiple(attrs={'class':'lista'}),
 			'otras_enfermedades': forms.TextInput(attrs={'class':'form-control'}),
 		}
 
-	def clean(self):
+	"""def clean(self):
 
 		# Sobrecargar clean devuelve un diccionario con los campos
-		cleaned_data = super(MotivoConsultaForm, self).clean()
-		valor_propiedad = cleaned_data.get("fechaRegistro")
+		cleaned_data = super(Consulta_form, self).clean()
+		valor_propiedad = cleaned_data.get("fecha_consulta")
      
 		if valor_propiedad > date.today():
-			raise forms.ValidationError({'fechaRegistro': ["La Fecha de Registro que seleccionó es mayor al dia de ahora",]})
+			raise forms.ValidationError({'fecha_consulta': ["La Fecha de Registro que seleccionó es mayor al dia de ahora",]})
         # Siempre hay que devolver el diccionario
-		return cleaned_data
+		return cleaned_data"""
 
 class Consulta_form_consultar(forms.ModelForm):
 	class Meta:

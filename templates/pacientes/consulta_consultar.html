@@ -10,6 +10,10 @@
 		column-count: 2;
 	}
 
+	.divOcultar{
+		display: none;
+	}	
+
 </style>
 
 {% endblock %}
@@ -25,9 +29,9 @@
   <div class="panel-body">
 
 	<center>
-		<h2><p class="text-primary">Nueva Consulta</p></h2>		
+		<h2><p class="text-primary">Mostrar Consulta</p></h2>		
 	</center>
-	<div>
+
 		<div class="col-md-5 col-md-offset-2">
 			<div class="form-group">
 				<label for="nombre_paciente">Código del Expediente</label>
@@ -47,6 +51,14 @@
 			{{form.fecha_consulta}}
 		</div>
 	</div>
+
+
+	<div class="col-md-2 divOcultar">
+			<div class="form-group">
+				<a class="btn btn-warning" id="boton_editar" href="#" onclick="redireccionar();" style=" margin-top: 25px;">Editar</a>
+			</div>
+		</div>
+	<div>	
 
 	<div class="col-md-8 col-md-offset-2">
 		<div class="form-group">

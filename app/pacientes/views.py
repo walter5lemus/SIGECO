@@ -63,19 +63,24 @@ def alumno_editar(request,num):
 
 ########################################################################################################################
 def expediente_crear(request):
-	user = request.user.id
+	user = request.user.rol
 	nombreUser = str(request.user.first_name.encode('utf-8')) + " " + str(request.user.last_name.encode('utf-8'))
 	fecha =  timezone.now()
 	if request.method == 'POST':
 		form = Expediente_form(request.POST)
-		if form.is_valid():	
-			 	form.save()
+		codigo = request.POST['cod_expediente']
+		tipo_sangre = request.POST['tipo_sangre']
+		alergias = request.POST['alergias']
+		usuario = request.user.id
+		enfermedades_padecidas = request.POST['enfermedades_padecidas']
+		if form.is_valid():
+				Expediente.objects.filter(cod_expediente=codigo).update(usuario_creador=usuario,tipo_sangre=tipo_sangre,alergias=alergias,enfermedades_padecidas=enfermedades_padecidas)
 			 	return HttpResponseRedirect('/pacientes/consulta/crear/')
 		else:
-			return render(request, 'pacientes/expediente_crear.html', {'form':form,'nombreUser':nombreUser})
+			return render(request, 'pacientes/expediente_crear.html', {'form':form,'nombreUser':nombreUser,'user':user})
 	else:
 		form = Expediente_form(initial={'fecha_hora_creacion':fecha})
-		return render(request, 'pacientes/expediente_crear.html', {'form':form,'nombreUser':nombreUser})
+		return render(request, 'pacientes/expediente_crear.html', {'form':form,'nombreUser':nombreUser,'user':user})
 
 
 def consulta_crear(request):
@@ -109,8 +114,15 @@ def busqueda(request):
 		resultado = Alumno.objects.filter(nombres__istartswith=request.GET['nombre'])
 		for resul in resultado:
 			resul.fecha_nacimiento.strftime('%m/%d/%Y')
-		data = serializers.serialize('json', resultado, fields=('nombres', 'apellidos','direccion','grado','genero','responsable','telefono','fecha_nacimiento'))
+		data = serializers.serialize('json', resultado, fields=('nombres','direccion','grado','genero','responsable','telefono','fecha_nacimiento'))
 		return HttpResponse(data, content_type='application/json')
+
+def busqueda_idExpediente(request):
+	if request.is_ajax():
+		resultado = Expediente.objects.filter(alumno=request.GET['nombre'])
+		data = serializers.serialize('json', resultado, fields=('cod_expediente','alumno_id'))
+		return HttpResponse(data, content_type='application/json')
+
 
 class BusquedaAjaxView(TemplateView):
 	def get(self,request,*args,**kwargs):

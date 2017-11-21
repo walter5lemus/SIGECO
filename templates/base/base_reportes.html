@@ -1,0 +1,129 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
+	<!--<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">-->
+	<link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.ico' %}">
+	<script src="{% static 'js/jquery-1.10.2.min.js' %}"></script>
+	<script src="{% static 'js/sweetalert.min.js' %}"></script>
+	<script src="{% static 'js/jquery-ui.js' %}"></script>
+	<script src="{% static 'js/DjangoAjax.js' %}"></script>
+  <script src="{% static 'js/moment.js' %}"></script>
+  <script src="{% static 'js/transition.js' %}"></script>
+  <script src="{% static 'js/collapse.js' %}"></script>
+	<script src="{% static 'js/jquery.ui.datepicker-es.js' %}"></script>
+  <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+
+  <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/sweetalert.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+
+  <link rel="stylesheet" type="text/css" href="{% static 'css/jquery-ui.css' %}">
+
+
+	{% block extrastatic %}
+	{% endblock %}
+
+	<style type="text/css"> 
+		.dropdown-toggle{
+		 display:block;
+		  width: 9em;
+		  word-wrap: break-word;
+		} 
+		.white {
+		    color: white;
+		}
+	</style>
+
+	<title>{% block title %} {% endblock %}</title>
+</head>
+
+<body>
+
+<div class="container">
+
+
+{% block navbar %}
+
+<div  class="col-md-16">
+
+ <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="sr-only">Toggle navigation</span>
+        <span class="sr-only">Toggle navigation</span>
+        <span class="sr-only">Toggle navigation</span>
+        <span class="sr-only">Toggle navigation</span>
+        <span class="sr-only">Toggle navigation</span>
+        <span class="sr-only">Toggle navigation</span>
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      <a class="navbar-brand" href="/home/">Home <span class="glyphicon glyphicon-home white"></span></a>
+
+    </div>
+
+
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+      <ul class="nav navbar-nav">
+      
+      <li><a href="/reportes/pacientes_atendidos/">Reporte de <br>Pacientes atendidos</a></li>
+
+      <li><a href="/reportes/enfermedades_frecuentes/">Reporte de <br>Enfermedades <br>más frecuentes</a></li>
+
+      <li><a href="/reportes/frecuencia_consultas/">Reporte de <br>Frecuencías de <br> consultas</a></li>
+
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+       	  <li class="active">
+           	<a href="{%url 'logout' %}">Cerrar Sesión</a>
+       	  </li> 
+      </ul>
+
+      <li class="nav navbar-nav navbar-right">
+        <div class="col-md-3">
+          <h6 style="color:white">Hola, <p><B>{{nombreUser}}</B></p></h6>
+        </div>
+      </li>
+
+    </div>
+  </div>
+ </nav>
+
+ </div>
+{% endblock %}
+ 
+
+
+	{% block header %}
+	{% endblock %}
+
+
+	{% block content %}
+	{% endblock %}
+
+
+	{% block tabla %}
+	{% endblock %}	
+
+	
+	{% block footer %}
+	{% endblock %}
+
+	{% block extrajs %}
+	{% endblock %}
+
+	</div>
+	
+</body>
+</html>

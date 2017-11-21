@@ -94,7 +94,6 @@
 
 	<div class="col-md-8 col-md-offset-2">
 		<div class="form-group">
-				<label for="{{form.fecha_hora_creacion.name}}">{{form.fecha_hora_creacion.label}}</label>	
 			{{form.fecha_hora_creacion}}
 		</div>
 	</div>
@@ -135,7 +134,9 @@
 
 	        <script type="text/javascript">
             $(function () {
-                $('#id_fecha_consulta').datetimepicker();
+                $('#id_fecha_consulta').datepicker({
+                	maxDate: new Date(),
+                });
             });
         </script>
 {% endblock %}

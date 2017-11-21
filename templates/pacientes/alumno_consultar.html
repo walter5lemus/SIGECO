@@ -64,12 +64,6 @@
 				{{form.nombres}}
 			</div>
 		</div>
-		<div class="col-md-4">
-			<div class="form-group">
-				<label for="{{form.apellidos.name}}">{{form.apellidos.label}}</label>
-				{{form.apellidos}}
-			</div>
-		</div>
 
 		<div class="col-md-8 col-md-offset-2">
 			<div class="form-group">
@@ -205,9 +199,7 @@
 					
 					});
 					$("#id_nombres").val(data[i].fields.nombres);
-					$("#id_apellidos").val(data[i].fields.apellidos);
 					$("#id_direccion").val(data[i].fields.direccion);
-					$("#id_apellidos").val(data[i].fields.apellidos);
 					if (data[i].grado < 10 && data[i].fields.grado > 0 ) {
 						$("#id_grado").val(data[i].fields.grado+" Grado");
 					}else{
@@ -236,6 +228,95 @@
 		});
 		
 	} });
+
+
+	$("#id_fecha_consulta").change(function(){
+
+			$('#id_nombre_paciente').keyup(function(e){
+			 	consulta = $("#id_nombre_paciente").val();
+			 		
+		 	$('#id_listanombres').empty().append('whatever');
+		 	$.ajax({
+		 		data: {'nombre': consulta},
+		 		url: '/pacientes/busqueda/',
+		 		type: 'get',
+		 		success : function(data) {
+		        	for (var i = 0; i < data.length; i++) {
+						$("#id_listanombres").append("<option>"+data[i].fields.nombres+"</option>");
+					}
+		 		},
+		 		error : function(message) {
+		        	console.log(message);
+		     	}
+		 	});
+		});
+
+		$("input[name='nombre_paciente']").on('input', function(e){
+	   var $input = $(this),
+	       val = $input.val();
+	       list = $input.attr('list'),
+	       match = $('#'+list + ' option').filter(function() {
+	           return ($(this).val() === val);
+	       });
+	    
+		var nombre = $('#id_nombre_paciente').val();
+		
+	    if(match.length > 0) {
+	        // value is in list
+			$.ajax({
+				data : {'nombre':nombre},
+				url : '/pacientes/busqueda/',
+				type : 'get',
+				success: function(data){
+					for (var i = 0; i < data.length; i++) {
+						if ({{user}} == 1) {
+							$(".divOcultar").css("display", "block");
+						}
+						$("#id_user").val(data[i].pk);
+						$.ajax({
+							data : {'id_pk':data[i].pk},
+							url : '/pacientes/busqueda2/',
+							type : 'get',
+							success: function(data){
+								for (var i = 0; i < data.length; i++) {
+									$("#id_cod_expediente").val(data[i].fields.cod_expediente);
+								}
+							},
+						
+						});
+						$("#id_nombres").val(data[i].fields.nombres);
+						$("#id_direccion").val(data[i].fields.direccion);
+						if (data[i].grado < 10 && data[i].fields.grado > 0 ) {
+							$("#id_grado").val(data[i].fields.grado+" Grado");
+						}else{
+							$("#id_grado").val(data[i].fields.grado+" año de Bachillerato");
+						}
+						if ( data[i].fields.genero == 1 ) {
+							$("#id_genero").val("Masculino");
+						}else{
+							$("#id_genero").val("Femenino");
+						}
+						$("#id_responsable").val(data[i].fields.responsable);
+						$("#id_telefono").val(data[i].fields.telefono);
+						var d=data[i].fields.fecha_nacimiento;
+						d = d.substr(0, 10).split("-");
+						d = d[2] + "/" + d[1] + "/" + d[0];
+						$("#id_fecha_nacimiento").val(d);
+						var today = new Date();
+						var date = new Date(data[i].fields.fecha_nacimiento);
+					    var dayDiff = Math.ceil(today - date ) / (1000 * 60 * 60 * 24 * 365);
+					    var age = parseInt(dayDiff);
+					    $('#id_edad').val(age);
+
+
+					}
+				},			
+			});
+			
+		} });
+
+
+	})
 
 	$("#id_grado").val("");
 	$("#id_genero").val("");

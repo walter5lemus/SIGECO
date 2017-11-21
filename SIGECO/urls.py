@@ -33,6 +33,7 @@ urlpatterns = [
 
     url(r'^usuarios/', include ('app.usuarios.urls',namespace="usuarios")),
     url(r'^pacientes/', include ('app.pacientes.urls',namespace="pacientes")),
+    url(r'^reportes/', include ('app.reportes.urls',namespace="reportes")),
 
 ]
 

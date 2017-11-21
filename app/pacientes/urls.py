@@ -20,6 +20,7 @@ urlpatterns = [
 
 
    url(r'^busqueda/$', login_required(busqueda), name='busquedaNombre'),
+   url(r'^busqueda_idExpediente/$', login_required(busqueda_idExpediente), name='busqueda_idExpediente'),
    url(r'^busqueda2/$', login_required(BusquedaAjaxView.as_view()), name='BusquedaAjaxView'),
    url(r'^busqueda_expediente/$', login_required(busqueda_expediente), name='busqueda_expediente'),
    url(r'^busqueda_consulta/$', login_required(busqueda_consulta), name='busqueda_consulta'),

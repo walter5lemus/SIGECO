@@ -1,0 +1,86 @@
+{% extends 'base/base_reportes.html' %}
+
+{% block title %}
+	Reporte Pacientes Atendidos
+{% endblock %}
+
+{% block menu-social %}
+{% endblock %}
+
+
+{% block content %}
+<form method="POST">
+	{% csrf_token %}
+ <div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title"></h3>
+  </div>
+  <div class="panel-body">
+
+	<center>
+		<h2><p class="text-primary">Reporte de Enfermedades Frecuentes</p></h2>		
+	</center>
+
+
+	<div class="col-md-5 col-md-offset-3">
+		<div class="form-group">
+				<label for="fecha_inicio" >Fecha Inicio</label>	
+				<input type="text" name="fecha_inicio" id="id_fecha_inicio" class="form-control" required >
+		</div>
+	</div>
+
+
+	<div class="col-md-5 col-md-offset-3">
+		<div class="form-group">
+				<label for="fecha_final" >Fecha Final</label>	
+				<input type="text" name="fecha_final" id="id_fecha_final" class="form-control" required >
+		</div>
+	</div>
+
+	<div class="col-md-8 col-md-offset-2">
+		<div class="form-group">
+			<br><br>
+			<div class="col-md-3 col-md-offset-2">
+			  <a href="/" class="btn btn-default btn-block">Regresar</a>
+			</div> 
+
+			<div class="col-md-3 col-md-offset-1">
+			  <center><button type="submit" class="btn btn-primary btn-block">Generar</button></center>
+			</div>
+
+
+		</div>
+		<br><br>
+	</div>
+	</div>
+</div>
+</form>
+
+ <script>
+
+ 	 $( function() {
+		$("#id_fecha_inicio").datepicker({
+		        dateFormat: 'dd-mm-yy',
+		        numberOfMonths: 2,
+		        onSelect: function(selected) {
+		          var fechaParse = new Date($("#fecha_inicio").val())
+				  fechaParse.setDate(fechaParse.getDate() + 2);
+		          $("#fecha_final").datepicker("option","minDate", fechaParse)
+		        }
+		    });
+		    $("#id_fecha_final").datepicker({ 
+		        dateFormat: 'dd-mm-yy',
+		        maxDate: new Date(),
+		        numberOfMonths: 2,
+		        onSelect: function(selected) {
+		           $("#id_fecha_inicio").datepicker("option","maxDate", selected)
+		        }
+		    });  
+	  } );
+
+</script> 
+
+
+
+	
+{% endblock %}

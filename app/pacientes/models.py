@@ -7,8 +7,7 @@ from django.db import models
 # Create your models here.
 
 class Alumno(models.Model):
-	nombres = models.CharField(max_length=50)
-	apellidos = models.CharField(max_length=50)
+	nombres = models.CharField(max_length=150)
 	direccion = models.CharField(max_length=100)
 	grado = models.IntegerField(choices=grado_choices, default=1)
 	edad = models.IntegerField()
@@ -21,12 +20,12 @@ class Alumno(models.Model):
 	db_table = "Alumno"
 
 	def __unicode__(self):
-		return '{} {}'.format(self.nombres,self.apellidos)
+		return '{} {}'.format(self.nombres)
 
 
 class Expediente(models.Model):
-	alumno = models.OneToOneField(Alumno, null=False, blank=False, on_delete=models.CASCADE)
-	cod_expediente = models.CharField(max_length=7)
+	alumno = models.OneToOneField(Alumno, null=True, blank=True, on_delete=models.CASCADE)
+	cod_expediente = models.CharField(max_length=7,null=True, blank=True)
 	responsable = models.CharField(max_length=100,null=True, blank=True)
 	telefono = models.CharField(max_length=8,null=True, blank=True)
 	tipo_sangre = models.CharField(max_length=10,null=True, blank=True)
