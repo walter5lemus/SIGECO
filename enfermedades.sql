@@ -7,4 +7,4 @@
 (6, 'Infección de garganta'),
 (7, 'Infección de Oído'),
 (8, 'Lesión en la piel'),
-(9, 'Meningitis'),
+(9, 'Meningitis');

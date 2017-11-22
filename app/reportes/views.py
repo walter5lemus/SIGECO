@@ -86,7 +86,8 @@ class Reporte1(View):
         response = HttpResponse(content_type='application/pdf')
         buffer = BytesIO()
         pdf = canvas.Canvas(buffer, pagesize=letter)
-        pdf.setTitle("Pacientes atendidos")
+        nombre = "Pacientes_atendidos_"+fech1+"_"+fech2
+        pdf.setTitle(nombre)
         self.cabecera(request,pdf)
         self.cuerpo(pdf,fech1,fech2)
         self.tabla(pdf,fech1,fech2)
@@ -95,7 +96,7 @@ class Reporte1(View):
         if page_num > 10:
             pdf.setFont("Times-Roman", 11)
             pdf.drawString(484, 687, str(page_num))
-            pdf.drawString(475, 687,u"/")
+            pdf.drawString(480, 687,u"/")
         else:
             pdf.setFont("Times-Roman", 11)
             pdf.drawString(479, 687, str(page_num))
@@ -111,8 +112,8 @@ class Reporte1(View):
         current_user = request.user
         showtime = strftime("%d-%m-%Y", gmtime())
         pdf.setFont("Times-Bold", 20)
-        pdf.drawString(160, 747, u"Complejo Educativo República de Corea")
-        pdf.drawString(260, 722, u"Clínica Medica") 
+        pdf.drawString(130, 747, u"Complejo Educativo República de Corea")
+        pdf.drawString(240, 722, u"Clínica Medica") 
         pdf.setFont("Times-Bold", 11)
         pdf.drawString(120, 687, u"Fecha de emisión:")
         pdf.setFont("Times-Roman", 11)
@@ -121,27 +122,30 @@ class Reporte1(View):
         pdf.setFont("Times-Bold", 11) 
         page_num = pdf.getPageNumber()
         pdf.drawString(419, 687, u"Página: ")
-        pdf.setFont("Times-Roman", 11) 
-        pdf.drawString(459, 687, str(page_num))
+        pdf.setFont("Times-Roman", 11)
+        if page_num > 10:
+            pdf.drawString(456, 687, str(page_num))
+        else:
+            pdf.drawString(459, 687, str(page_num))
         pdf.line(20,665,580,665)
 
     def cuerpo(self,pdf,fech1,fech2):
 
         pdf.setFont("Times-Bold", 14)
-        pdf.drawString(215, 610, "Reporte de pacientes atendidos")
+        pdf.drawString(210, 610, "Reporte de Pacientes Atendidos")
         pdf.setFont("Times-Bold", 11)
-        pdf.drawString(165, 560, "Fecha inicial:")
+        pdf.drawString(175, 560, "Fecha inicial:")
         pdf.setFont("Times-Roman", 11)
-        pdf.drawString(240, 560, fech1)
+        pdf.drawString(250, 560, fech1)
         pdf.setFont("Times-Bold", 11)
-        pdf.drawString(310, 560, "Fecha final:")
+        pdf.drawString(340, 560, "Fecha final:")
         pdf.setFont("Times-Roman", 11)
-        pdf.drawString(375, 560, fech2)
+        pdf.drawString(405, 560, fech2)
         pdf.setFont("Times-Bold", 11)
 
     def tabla(self,pdf,fech1,fech2):
 
-            encabezados = ('Expediente', 'Nombre','Grado','Genero','Fecha y Hora de Consulta')
+            encabezados = ('Expediente', 'Nombre','Grado','Genero','Fecha de Consulta')
             data=[]
             #query2 = Alumno.objects.values('expediente','nombres','grado','genero')
             f1 = datetime.datetime.strptime(fech1, '%d-%m-%Y').strftime('%Y-%m-%d')
@@ -154,33 +158,39 @@ class Reporte1(View):
                 expediente = Expediente.objects.get(cod_expediente=alum.cod_expediente)
                 #print expediente
                 Alumnos = Alumno.objects.get(id=expediente.alumno_id)
-
+                grado = str(Alumnos.grado)+"° Grado"
                 if Alumnos.genero == 1:
                     sexo = "Masculino"
                 else:
                     sexo = "Femenino"
+                if Alumnos.grado ==10:
+                    grado = "1° Bachillerato"
+                elif Alumnos.grado == 11:
+                    grado = "2° Bachillerato"
+                elif Alumnos.grado == 12:
+                    grado = "3° Bachillerato"     
                 data.append([
                     (expediente.cod_expediente),
                     (Alumnos.nombres),
-                    (Alumnos.grado),
+                    (grado),
                     (sexo),
                     (alum.fecha_consulta.strftime('%d-%m-%Y')),
                     ])
             total = [("","","","Total",cantidad)]
 
            # pxatendidos = [cantidad]
-            detalle_orden = Table([encabezados] + data +total)
+            detalle_orden = Table([encabezados] + data +total,colWidths=[3 * cm, 7 * cm, 3 * cm, 3 * cm, 4 * cm])
             detalle_orden.setStyle(TableStyle(
                 [
                     ('ALIGN',(0,0),(-1,-1),'CENTER'),
                     ('GRID', (0, 0  ), (-1, -1), 1, colors.black), 
                     ('FONTSIZE', (0, 0), (-1, -1), 11),
-                    ('BACKGROUND',(0,0),(-1,0),colors.lightblue),
-                    #('ROWBACKGROUNDS',(0,0),(-1,0),colors.green), 
+                    ('BACKGROUND',(0,0),(-1,0),colors.HexColor("#1899B2")),
+                    ('ROWBACKGROUNDS',(0,1),(-1,cantidad),[colors.white,colors.lightblue]), 
                 ]
             ))
             detalle_orden.wrapOn(pdf, 800, 560)
-            detalle_orden.drawOn(pdf, 70, 480)
+            detalle_orden.drawOn(pdf, 23, 425)
 
     def pie(self,pdf):
         pdf.line(20,65,580,65)
@@ -198,7 +208,8 @@ class Reporte2(View):
         response = HttpResponse(content_type='application/pdf')
         buffer = BytesIO()
         pdf = canvas.Canvas(buffer, pagesize=letter)
-        pdf.setTitle("Enfermedades más Frecuentes")
+        nombre = "Enfermedades_Frecuentes_"+fech1+"_"+fech2
+        pdf.setTitle(nombre)
         self.cabecera(request,pdf)
         self.cuerpo(pdf,fech1,fech2)
         self.tabla(pdf,fech1,fech2)
@@ -207,7 +218,7 @@ class Reporte2(View):
         if page_num > 10:
             pdf.setFont("Times-Roman", 11)
             pdf.drawString(484, 687, str(page_num))
-            pdf.drawString(475, 687,u"/")
+            pdf.drawString(480, 687,u"/")
         else:
             pdf.setFont("Times-Roman", 11)
             pdf.drawString(479, 687, str(page_num))
@@ -223,7 +234,7 @@ class Reporte2(View):
         current_user = request.user
         showtime = strftime("%d-%m-%Y", gmtime())
         pdf.setFont("Times-Bold", 20)
-        pdf.drawString(140, 747, u"Complejo Educativo República de Corea")
+        pdf.drawString(130, 747, u"Complejo Educativo República de Corea")
         pdf.drawString(240, 722, u"Clínica Medica") 
         pdf.setFont("Times-Bold", 11)
         pdf.drawString(120, 687, u"Fecha de emisión:")
@@ -233,8 +244,11 @@ class Reporte2(View):
         pdf.setFont("Times-Bold", 11) 
         page_num = pdf.getPageNumber()
         pdf.drawString(419, 687, u"Página: ")
-        pdf.setFont("Times-Roman", 11) 
-        pdf.drawString(459, 687, str(page_num))
+        pdf.setFont("Times-Roman", 11)
+        if page_num > 10:
+            pdf.drawString(456, 687, str(page_num))
+        else:
+            pdf.drawString(459, 687, str(page_num))
         pdf.line(20,665,580,665)
 
     def cuerpo(self,pdf,fech1,fech2):
@@ -273,26 +287,27 @@ class Reporte2(View):
                 if consulta.otras_enfermedades != None:
                     Q10 += 1
                 for enfermedad in consulta.enfermedades.all():
-                    if enfermedad.nombre_enfermedad == "Alergias":
+                    if enfermedad.id == 1:
                         Q1 += 1
-                    elif enfermedad.nombre_enfermedad == "Catarro":
+                    elif enfermedad.id == 2:
                         Q2 += 1
-                    elif enfermedad.nombre_enfermedad == "Conjuntivitis":
+                    elif enfermedad.id == 3:
                         Q3 += 1
-                    elif enfermedad.nombre_enfermedad == "Desmayo":
+                    elif enfermedad.id == 4:
                         Q4 += 1
-                    elif enfermedad.nombre_enfermedad == "Dolor de cabeza":
+                    elif enfermedad.id == 5:
                         Q5 += 1
-                    elif enfermedad.nombre_enfermedad == "Infección de garganta":
+                    elif enfermedad.id == 6:
                         Q6 += 1
-                    elif enfermedad.nombre_enfermedad == "Infección de Oído":
+                    elif enfermedad.id == 7:
                         Q7 += 1
-                    elif enfermedad.nombre_enfermedad == "Lesión en la piel":
+                    elif enfermedad.id == 8:
                         Q8 += 1
-                    elif enfermedad.nombre_enfermedad == "Meningitis":
+                    elif enfermedad.id == 9:
                         Q9 += 1
             suma = Q1+Q2+Q3+Q4+Q5+Q6+Q7+Q8+Q9+Q10
             cantidad = str(suma)
+            cantidadRegistros = len(query1)
 
             data.append([("Alergias"),(Q1),("Infección de garganta"),(Q6),])
             data.append([("Catarro"),(Q2),("Infección de Oído"),(Q7),])
@@ -300,18 +315,18 @@ class Reporte2(View):
             data.append([("Desmayo"),(Q4),("Meningitis"),(Q9),])
             data.append([("Dolor de cabeza"),(Q5),("Otras Enfermedades"),(Q10),])
             total = [("","","Total",cantidad)]
-            detalle_orden = Table([encabezados] + data +total)
+            detalle_orden = Table([encabezados] + data +total,colWidths=[4 * cm, 3 * cm, 4 * cm, 3 * cm])
             detalle_orden.setStyle(TableStyle(
                 [
                     ('ALIGN',(0,0),(-1,-1),'CENTER'),
                     ('GRID', (0, 0  ), (-1, -1), 1, colors.black), 
-                    ('FONTSIZE', (0, 0), (-1, -1), 13),
-                    ('BACKGROUND',(0,0),(-1,0),colors.lightblue),
-                    #('ROWBACKGROUNDS',(0,0),(-1,0),colors.green), 
+                    ('FONTSIZE', (0, 0), (-1, -1), 11),
+                    ('BACKGROUND',(0,0),(-1,0),colors.HexColor("#1899B2")),
+                    ('ROWBACKGROUNDS',(0,1),(-1,5),[colors.white,colors.lightblue]), 
                 ]
             ))
             detalle_orden.wrapOn(pdf, 800, 560)
-            detalle_orden.drawOn(pdf, 100, 375)
+            detalle_orden.drawOn(pdf, 110, 375)
 
     def pie(self,pdf):
         pdf.line(20,65,580,65)
@@ -330,7 +345,8 @@ class Reporte3(View):
         response = HttpResponse(content_type='application/pdf')
         buffer = BytesIO()
         pdf = canvas.Canvas(buffer, pagesize=letter)
-        pdf.setTitle("Enfermedades más Frecuentes")
+        nombre = "Consultas_Frecuentes_"+fech1+"_"+fech2
+        pdf.setTitle(nombre)
         self.cabecera(request,pdf)
         self.cuerpo(pdf,fech1,fech2)
         self.tabla(pdf,fech1,fech2)
@@ -339,7 +355,7 @@ class Reporte3(View):
         if page_num > 10:
             pdf.setFont("Times-Roman", 11)
             pdf.drawString(484, 687, str(page_num))
-            pdf.drawString(475, 687,u"/")
+            pdf.drawString(480, 687,u"/")
         else:
             pdf.setFont("Times-Roman", 11)
             pdf.drawString(479, 687, str(page_num))
@@ -355,7 +371,7 @@ class Reporte3(View):
         current_user = request.user
         showtime = strftime("%d-%m-%Y", gmtime())
         pdf.setFont("Times-Bold", 20)
-        pdf.drawString(140, 747, u"Complejo Educativo República de Corea")
+        pdf.drawString(130, 747, u"Complejo Educativo República de Corea")
         pdf.drawString(240, 722, u"Clínica Medica") 
         pdf.setFont("Times-Bold", 11)
         pdf.drawString(120, 687, u"Fecha de emisión:")
@@ -365,14 +381,17 @@ class Reporte3(View):
         pdf.setFont("Times-Bold", 11) 
         page_num = pdf.getPageNumber()
         pdf.drawString(419, 687, u"Página: ")
-        pdf.setFont("Times-Roman", 11) 
-        pdf.drawString(459, 687, str(page_num))
-        pdf.line(20,665,580,665)
+        pdf.setFont("Times-Roman", 11)
+        if page_num > 10:
+            pdf.drawString(456, 687, str(page_num))
+        else:
+            pdf.drawString(459, 687, str(page_num))
+        pdf.line(20,665,580,665)    
 
     def cuerpo(self,pdf,fech1,fech2):
 
         pdf.setFont("Times-Bold", 14)
-        pdf.drawString(190, 610, "Reporte de Enfermedades más Frecuentes")
+        pdf.drawString(190, 610, "Reporte de Frecuencia de Consultas")
         pdf.setFont("Times-Bold", 11)
         pdf.drawString(175, 560, "Fecha inicial:")
         pdf.setFont("Times-Roman", 11)
@@ -384,66 +403,71 @@ class Reporte3(View):
         pdf.setFont("Times-Bold", 11)
 
     def tabla(self,pdf,fech1,fech2):
-
-            encabezados = ('Enfermedad','Frecuencia','Enfermedad','Frecuencia')
+            encabezados = ('Edad','Frecuencia','Edad','Frecuencia')
             data=[]
             #query2 = Alumno.objects.values('expediente','nombres','grado','genero')
             f1 = datetime.datetime.strptime(fech1, '%d-%m-%Y').strftime('%Y-%m-%d')
             f2 = datetime.datetime.strptime(fech2, '%d-%m-%Y').strftime('%Y-%m-%d')
-            Q1 = 0
-            Q2 = 0
-            Q3 = 0
-            Q4 = 0
-            Q5 = 0
-            Q6 = 0
-            Q7 = 0
-            Q8 = 0
-            Q9 = 0
-            Q10 = 0
+            Q1_4 = 0
+            Q5_6 = 0
+            Q7_8 = 0
+            Q9_10 = 0
+            Q11_12 = 0
+            Q13_14 = 0
+            Q15_16 = 0
+            Q17_18 = 0
+            Q19_20 = 0
+            Q21 = 0
             query1 = Consulta.objects.filter(fecha_consulta__range=[f1, f2])
             for consulta in query1:
-                if consulta.otras_enfermedades != None:
-                    Q10 += 1
-                for enfermedad in consulta.enfermedades.all():
-                    if enfermedad.nombre_enfermedad == "Alergias":
-                        Q1 += 1
-                    elif enfermedad.nombre_enfermedad == "Catarro":
-                        Q2 += 1
-                    elif enfermedad.nombre_enfermedad == "Conjuntivitis":
-                        Q3 += 1
-                    elif enfermedad.nombre_enfermedad == "Desmayo":
-                        Q4 += 1
-                    elif enfermedad.nombre_enfermedad == "Dolor de cabeza":
-                        Q5 += 1
-                    elif enfermedad.nombre_enfermedad == "Infección de garganta":
-                        Q6 += 1
-                    elif enfermedad.nombre_enfermedad == "Infección de Oído":
-                        Q7 += 1
-                    elif enfermedad.nombre_enfermedad == "Lesión en la piel":
-                        Q8 += 1
-                    elif enfermedad.nombre_enfermedad == "Meningitis":
-                        Q9 += 1
-            suma = Q1+Q2+Q3+Q4+Q5+Q6+Q7+Q8+Q9+Q10
+                cod_Exp = Expediente.objects.get(cod_expediente=consulta.cod_expediente)
+                alumnos = Alumno.objects.get(id=cod_Exp.alumno_id)
+                fecha_nac = alumnos.fecha_nacimiento
+                diff = (datetime.date.today() - fecha_nac).days
+                years = str(int(diff/365))
+                print years
+                
+                if years == 1 and years == 4:
+                    Q1_4 += 1
+                elif years == 5 and years == 6:
+                    Q5_6 += 1
+                elif years == 7 and years == 8:
+                    Q7_8 += 1
+                elif years == 9 and years == 10:
+                    Q9_10 += 1
+                elif years == 11 and years == 12:
+                    Q11_12 += 1
+                elif years == 13 and years == 14:
+                    Q13_14 += 1
+                elif years == 15 and years == 16:
+                    Q15_16 += 1
+                elif years == 17 and years == 18:
+                    Q17_18 += 1
+                elif years == 19 and years == 20:
+                    Q19_20 += 1
+                elif years >= 21:
+                    Q21 += 1
+            suma = Q1_4+Q5_6+Q7_8+Q9_10+Q11_12+Q13_14+Q15_16+Q17_18+Q19_20+Q21
             cantidad = str(suma)
 
-            data.append([("Alergias"),(Q1),("Infección de garganta"),(Q6),])
-            data.append([("Catarro"),(Q2),("Infección de Oído"),(Q7),])
-            data.append([("Conjuntivitis"),(Q3),("Lesión en la piel"),(Q8),])
-            data.append([("Desmayo"),(Q4),("Meningitis"),(Q9),])
-            data.append([("Dolor de cabeza"),(Q5),("Otras Enfermedades"),(Q10),])
+            data.append([("1 a 4 años"),(Q1_4),("13 a 14 años"),(Q13_14),])
+            data.append([("5 a 6 años"),(Q5_6),("15 a 16 años"),(Q15_16),])
+            data.append([("7 a 8 años"),(Q7_8),("17 a 18 años"),(Q17_18),])
+            data.append([("9 a 10 años"),(Q9_10),("19 a 20 años"),(Q19_20),])
+            data.append([("11 a 12 años"),(Q11_12),("21 o más"),(Q21),])
             total = [("","","Total",cantidad)]
-            detalle_orden = Table([encabezados] + data +total)
+            detalle_orden = Table([encabezados] + data +total, colWidths=[3 * cm, 4 * cm, 4 * cm, 3 * cm,])
             detalle_orden.setStyle(TableStyle(
                 [
                     ('ALIGN',(0,0),(-1,-1),'CENTER'),
                     ('GRID', (0, 0  ), (-1, -1), 1, colors.black), 
-                    ('FONTSIZE', (0, 0), (-1, -1), 13),
-                    ('BACKGROUND',(0,0),(-1,0),colors.lightblue),
-                    #('ROWBACKGROUNDS',(0,0),(-1,0),colors.green), 
+                    ('FONTSIZE', (0, 0), (-1, -1), 11),
+                    ('BACKGROUND',(0,0),(-1,0),colors.HexColor("#1899B2")),
+                    ('ROWBACKGROUNDS',(0,1),(-1,5),[colors.white,colors.lightblue]), 
                 ]
             ))
             detalle_orden.wrapOn(pdf, 800, 560)
-            detalle_orden.drawOn(pdf, 100, 375)
+            detalle_orden.drawOn(pdf, 120, 375)
 
     def pie(self,pdf):
         pdf.line(20,65,580,65)

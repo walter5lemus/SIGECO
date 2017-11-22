@@ -138,5 +138,10 @@
                 	maxDate: new Date(),
                 });
             });
+
+            $('#id_hora_consulta').timepicker({
+            	'disableTimeRanges': [['12:00am', '7:00am'], ['12:00pm', '01:00pm'],['6:00pm', '11:30pm']],
+            	'timeFormat': 'H:i:s',
+            });
         </script>
 {% endblock %}
