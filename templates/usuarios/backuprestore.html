@@ -1,0 +1,152 @@
+{% extends 'base/base_usuarios.html' %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-4 col-md-offset-4">
+			<div class="form-group">
+				<h2> Respaldo de datos</h2>
+			</div>
+		</div>
+		<div class="col-md-3 col-md-offset-5">
+			<div class="form-group">
+				<a class="btn btn-danger" href="#" onclick="generar();">Generar</a>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="row">
+		<div class="col-md-4 col-md-offset-4">
+			<div class="form-group">
+				<h2> Carga de datos</h2>
+			</div>
+		</div>
+		<div class="col-md-8 col-md-offset-3">
+			<div class="form-group">
+				<div class="col-md-8">
+					<input type="file"  id="file" name="file" class="form-control">
+				</div>
+				<div class="col-md-2">
+					<a class="btn btn-success" href="#" onclick="restore();">Cargar</a>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="col-md-12">
+		<div class="form-group">
+			<br><br>
+			<div class="col-md-2 col-md-offset-10">
+			  <a href="/usuarios/gestion/" class="btn btn-warning btn-block">Regresar</a>
+			</div> 
+
+		</div>
+		<br><br>
+	</div>
+
+<script>
+
+
+	function generar(){
+	swal({
+		  title: "¡ADVERTENCIA!",
+		  text: "¡¿Desea generar un respaldo de datos?!",
+		  type: "warning",
+		  showCancelButton: true,
+		  confirmButtonColor: "#DD6B55",
+		  showLoaderOnConfirm: true,
+  		  closeOnConfirm: false,
+		},
+		function(){
+		  setTimeout(function(){
+		    $.ajax({
+				data : {},
+				url : '/usuarios/backupBD/',
+				type : 'get',
+				success: function(data){
+					swal({
+					  title: "¡Excelente!",
+					  text: "¡El respaldo de datos se genero correctamente!",
+					  type: "success",
+					  showCancelButton: true,
+					  confirmButtonColor: "#DD6B55",
+					  confirmButtonText: "Ok",
+					  showCancelButton: false,
+					  closeOnConfirm: false
+					});
+				},
+				error: function(data){
+					errors = $.parseJSON(data.responseText);
+					swal({
+					  title: "¡ERROR!",
+					  text: "¡ "+errors.reason+" !",
+					  type: "error",
+					  showCancelButton: true,
+					  confirmButtonColor: "#DD6B55",
+					  confirmButtonText: "Ok",
+					  showCancelButton: false,
+					  closeOnConfirm: false
+						}
+					); // <- this should run if user is not activated
+				}
+			});
+		  }, 2000);
+		});
+	}
+
+
+
+	function restore(){
+		var nombre = $("#file")[0].files[0];
+		
+		if (nombre!=undefined) {
+			swal({
+				  title: "¡ADVERTENCIA!",
+				  text: "¡¿Desea generar un respaldo de datos?!",
+				  type: "warning",
+				  showCancelButton: true,
+				  confirmButtonColor: "#DD6B55",
+				  showLoaderOnConfirm: true,
+		  		  closeOnConfirm: false,
+				},
+				function(){
+				  setTimeout(function(){
+				    $.ajax({
+						data : {'nombre':nombre.name},
+						url : '/usuarios/restoreBD/',
+						type : 'POST',
+						success: function(data){
+							swal({
+							  title: "¡Excelente!",
+							  text: "¡El respaldo de datos se genero correctamente!",
+							  type: "success",
+							  showCancelButton: true,
+							  confirmButtonColor: "#DD6B55",
+							  confirmButtonText: "Ok",
+							  showCancelButton: false,
+							  closeOnConfirm: false
+							});
+						},
+						error: function(data){
+							errors = $.parseJSON(data.responseText);
+							swal({
+							  title: "¡ERROR!",
+							  text: "¡ "+errors.reason+" !",
+							  type: "error",
+							  showCancelButton: true,
+							  confirmButtonColor: "#DD6B55",
+							  confirmButtonText: "Ok",
+							  showCancelButton: false,
+							  closeOnConfirm: false
+								}
+							); // <- this should run if user is not activated
+						}
+					});
+				  }, 2000);
+				});
+			}
+		}	
+</script>
+
+{% endblock %}

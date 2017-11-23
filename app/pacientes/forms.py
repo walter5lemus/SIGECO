@@ -37,15 +37,15 @@ class Alumno_form(forms.ModelForm):
 		}
 
 		widgets={
-			'nombres':forms.TextInput(attrs={'class':'form-control'}),
-			'direccion':forms.TextInput(attrs={'class':'form-control'}),
+			'nombres':forms.TextInput(attrs={'class':'form-control','autocomplete':'off'}),
+			'direccion':forms.TextInput(attrs={'class':'form-control','autocomplete':'off'}),
 			'edad':forms.NumberInput(attrs={'class':'form-control','min':1,'readonly':True}),
 			'grado':forms.Select(attrs={'class':'form-control'}),
 			'genero':forms.Select(attrs={'class':'form-control'}),
 			'fecha_nacimiento':forms.SelectDateWidget(years=range(1980,this_year,1),attrs={'class':'form-control fecha','style': 'width: 243px; display: inline-block;'}),
-			'fecha_hora_creacion':forms.HiddenInput(attrs={'class':'form-control','readonly':'true'}),
-			'responsable':forms.TextInput(attrs={'class':'form-control'}),
-			'telefono':forms.TextInput(attrs={'class':'form-control'}),
+			'fecha_hora_creacion':forms.HiddenInput(attrs={'class':'form-control','readonly':'true','autocomplete':'off'}),
+			'responsable':forms.TextInput(attrs={'class':'form-control','autocomplete':'off'}),
+			'telefono':forms.TextInput(attrs={'class':'form-control','autocomplete':'off'}),
 		}
 
 class Alumno_form_consultar(forms.ModelForm):
@@ -117,12 +117,12 @@ class Expediente_form(forms.ModelForm):
 		}
 		widgets = {
 			'alumno' : forms.HiddenInput(attrs={'class':'form-control'}),
-			'cod_expediente':forms.TextInput(attrs={'class':'form-control'}),
-			'responsable':forms.TextInput(attrs={'class':'form-control'}),
-			'telefono':forms.TextInput(attrs={'class':'form-control', 'pattern':'[0-9]{8}','title':'Ejemplo: 77777777'}),
-			'tipo_sangre':forms.TextInput(attrs={'class':'form-control'}),
-			'alergias':forms.Textarea(attrs={'class':'form-control'}),
-			'enfermedades_padecidas':forms.Textarea(attrs={'class':'form-control'}),
+			'cod_expediente':forms.TextInput(attrs={'class':'form-control','autocomplete':'off'}),
+			'responsable':forms.TextInput(attrs={'class':'form-control','autocomplete':'off'}),
+			'telefono':forms.TextInput(attrs={'class':'form-control', 'pattern':'[0-9]{8}','title':'Ejemplo: 77777777','autocomplete':'off'}),
+			'tipo_sangre':forms.TextInput(attrs={'class':'form-control','autocomplete':'off'}),
+			'alergias':forms.Textarea(attrs={'class':'form-control','autocomplete':'off'}),
+			'enfermedades_padecidas':forms.Textarea(attrs={'class':'form-control','autocomplete':'off'}),
 			'usuario_creador':forms.HiddenInput(attrs={'class':'form-control'}),
 			'fecha_hora_creacion':forms.HiddenInput(attrs={'class':'form-control'}),
 		}
@@ -194,14 +194,14 @@ class Consulta_form(forms.ModelForm):
 		}
 		widgets = {
 			'cod_expediente': forms.Select(attrs={'class':'form-control', 'pattern':'[0-9]{4}[-]{1}[0-9]{2}','title':'Ejemplo: 0001-16','autocomplete':'off'}),
-			'diagnostico': forms.Textarea(attrs={'class':'form-control'}),
-			'observaciones': forms.Textarea(attrs={'class':'form-control'}),
-			'nombre_medico': forms.TextInput(attrs={'class':'form-control'}),
-			'fecha_consulta': forms.TextInput(attrs={'class':'form-control'}),
-			'hora_consulta' : forms.TextInput(attrs={'class':'form-control'}),
+			'diagnostico': forms.Textarea(attrs={'class':'form-control','autocomplete':'off'}),
+			'observaciones': forms.Textarea(attrs={'class':'form-control','autocomplete':'off'}),
+			'nombre_medico': forms.TextInput(attrs={'class':'form-control','autocomplete':'off'}),
+			'fecha_consulta': forms.TextInput(attrs={'class':'form-control','autocomplete':'off'}),
+			'hora_consulta' : forms.TextInput(attrs={'class':'form-control','autocomplete':'off'}),
 			'fecha_hora_creacion': forms.HiddenInput(attrs={'class':'form-control','readonly':True}),
 			'enfermedades': forms.CheckboxSelectMultiple(attrs={'class':'lista'}),
-			'otras_enfermedades': forms.TextInput(attrs={'class':'form-control'}),
+			'otras_enfermedades': forms.TextInput(attrs={'class':'form-control','autocomplete':'off'}),
 		}
 
 	"""def clean(self):

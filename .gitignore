@@ -8,7 +8,6 @@
 # Icon must end with two \r
 Icon
 
-
 # Thumbnails
 ._*
 
@@ -77,6 +76,7 @@ docs/_build/
 # PyBuilder
 target/
 
+*.json
 
 ### Django ###
 *.log
